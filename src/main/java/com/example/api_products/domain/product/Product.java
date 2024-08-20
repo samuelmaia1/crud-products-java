@@ -22,4 +22,11 @@ public class Product {
     private Integer stock;
 
     private Boolean available;
+
+    public Product(RequestProduct requestProduct){
+        this.name = requestProduct.name();
+        this.stock = requestProduct.stock();
+        this.price_in_cents = requestProduct.price_in_cents();
+        this.available = requestProduct.available();
+    }
 }
