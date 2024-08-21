@@ -29,4 +29,17 @@ public class Product {
         this.price_in_cents = requestProduct.price_in_cents();
         this.available = requestProduct.available();
     }
+
+    public Product(RequestProductPut requestProductPut){
+        this.id = requestProductPut.id();
+        this.name = requestProductPut.name();
+        this.stock = requestProductPut.stock();
+        this.price_in_cents = requestProductPut.price_in_cents();
+        this.available = requestProductPut.available();
+    }
+
+    @Override
+    public String toString(){
+        return this.name + " R$" + this.price_in_cents/100 + " Estoque: " + this.stock;
+    }
 }
