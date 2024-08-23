@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/user")
@@ -35,6 +37,22 @@ public class UserController {
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @GetMapping("/validate")
+    public ResponseEntity<Boolean> validatePassword(@RequestParam String login,
+                                                    @RequestParam String password){
+
+        Optional<User> optionalUser = repository.findByLogin(login);
+        if (optionalUser.isEmpty()){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+        }
+
+        boolean valid = encoder.matches(password, optionalUser.get().getPassword());
+
+        HttpStatus status = valid? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
+
+        return ResponseEntity.status(status).body(valid);
     }
 
     @GetMapping
